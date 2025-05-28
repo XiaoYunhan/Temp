@@ -1,0 +1,54 @@
+<div class="rules-checkbox-list">
+  <div class="checkbox-columns-container">
+    <div *ngFor="let column of columns" class="checkbox-column">
+      <div class="column-header" (click)="toggleColumn(column)">
+        <div class="header-content">
+          <input
+            *ngIf="column.headerCheckbox"
+            type="checkbox"
+            class="header-checkbox"
+            [(ngModel)]="column.headerChecked"
+            (change)="onHeaderCheckboxChange(column)"
+            (click)="$event.stopPropagation()"
+          />
+          <span class="column-title">{{ column.title }}</span>
+        </div>
+        <span *ngIf="column.canCollapse" class="collapse-icon">
+          <svg
+            [class.rotated]="column.isCollapsed"
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1 1L5 5L9 1"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+      </div>
+      
+      <div class="checkbox-items" [class.collapsed]="column.isCollapsed">
+        <div
+          *ngFor="let item of column.items"
+          class="checkbox-item"
+          [class.indented]="item.indentLevel"
+          [style.padding-left.px]="(item.indentLevel || 0) * 20"
+        >
+          <input
+            type="checkbox"
+            [id]="column.id + '-' + item.id"
+            [(ngModel)]="item.checked"
+            (change)="onItemCheckboxChange(column, item)"
+          />
+          <label [for]="column.id + '-' + item.id">{{ item.label }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
